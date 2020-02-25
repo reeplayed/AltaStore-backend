@@ -133,6 +133,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://localhost:63342']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://localhost:63342', 'https://laughing-swirles-b0039e.netlify.com']
 
 django_heroku.settings(locals())

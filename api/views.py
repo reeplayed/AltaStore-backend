@@ -24,8 +24,7 @@ from functools import reduce
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .pagination import SetPagination
 import random 
-import pandas as pd
-import numpy as np
+
 
 
 @api_view(['POST'])
@@ -132,7 +131,7 @@ def ship(request):
 
     return Response(res)
     
-    
+
 @api_view(['GET', 'POST'])
 def detail_view(request, slug):
     print(request.headers)

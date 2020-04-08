@@ -13,7 +13,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'profile_image']
 
 
-
 class CustomAuthTokenSerializer(AuthTokenSerializer):
     username = serializers.CharField(label=_("Username"))
     password = serializers.CharField(

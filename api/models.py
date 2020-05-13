@@ -59,7 +59,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                    'active. Unselect this instead of deleting accounts.'))
 
     facebook_id = models.CharField(max_length=200, unique=True, null=True, blank=True)
-    profile_image = models.ImageField(default={set_random_image()})
+    profile_image = models.ImageField(default=set_random_image())
 
     gender = models.CharField(max_length=10, null=True, blank=True)
 

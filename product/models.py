@@ -9,8 +9,7 @@ COLOR = (
     ("green", '#3FA434'),
     ("black", '#010500'),
     ("grey", '#9C9E9C'),
-    ("other", '#D0D1D0'),
-    ("dft", '#D0D2D0'),
+    ("other", '#D0D1D0')
 )
 CATEGORY =(
     ('narozniki', 'Narożniki'),

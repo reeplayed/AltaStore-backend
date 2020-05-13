@@ -17,7 +17,7 @@ def update_cart(userCart, old_cart):
 
 
 def set_random_image():
-    images = ['dafault.jpg', 'joda.jpeg', 'wiedzmin.jpeg']
+    images = ['default.jpg', 'joda.jpeg', 'wiedzmin.jpeg']
     return random.choice(images)
 
 

@@ -23,7 +23,9 @@ from functools import reduce
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .pagination import SetPagination
 import random 
-from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 @api_view(['POST'])
 def ship(request):
@@ -381,60 +383,60 @@ class CustomObtainAuthToken(ObtainAuthToken):
 def registration_view(request):
     data = request.data
     errors = {}
-    if settings.AUTH_USER_MODEL.objects.filter(username=data['username']):
+    if User.objects.filter(username=data['username']):
         errors['username'] = 'Taka nazwa użytkownika juz istnieje.'
-    if settings.AUTH_USER_MODEL.objects.filter(email=data['email']):
+    if User.objects.filter(email=data['email']):
         errors['email'] = 'Taki adres email już istnieje.'
     if not errors:
-        user = settings.AUTH_USER_MODEL(username=data['username'], email=data['email'], password=data['password'])
+        user = User(username=data['username'], email=data['email'], password=data['password'])
         user.save()
         return Response({'message': 'Konto zostało utworzone.'})
     else:
         raise Http404
 
 
-@csrf_exempt
-def facebook_login_view(request):
+# @csrf_exempt
+# def facebook_login_view(request):
 
-    data = json.loads(request.body.decode('utf-8'))
-    access_token = data.get('accessToken')
-    old_cart = data.get('old_cart', None)
-    new_user = False
-    try:
-        graph = facebook.GraphAPI(access_token=access_token)
-        user_info = graph.get_object(
-            id='me',
-            fields='first_name, middle_name, last_name, id, '
-            'currency, hometown, location, locale, '
-            'email, gender, interested_in, picture.type(large),'
-            ' birthday, cover')
-    except facebook.GraphAPIError:
-        return JsonResponse({'error': 'Invalid data'}, safe=False)
+#     data = json.loads(request.body.decode('utf-8'))
+#     access_token = data.get('accessToken')
+#     old_cart = data.get('old_cart', None)
+#     new_user = False
+#     try:
+#         graph = facebook.GraphAPI(access_token=access_token)
+#         user_info = graph.get_object(
+#             id='me',
+#             fields='first_name, middle_name, last_name, id, '
+#             'currency, hometown, location, locale, '
+#             'email, gender, interested_in, picture.type(large),'
+#             ' birthday, cover')
+#     except facebook.GraphAPIError:
+#         return JsonResponse({'error': 'Invalid data'}, safe=False)
 
-    try:
-        user = settings.AUTH_USER_MODEL.objects.get(facebook_id=user_info.get('id'))
+#     try:
+#         user = settings.AUTH_USER_MODEL.objects.get(facebook_id=user_info.get('id'))
 
-    except settings.AUTH_USER_MODEL.DoesNotExist:
-        password = settings.AUTH_USER_MODEL.objects.make_random_password()
-        user = settings.AUTH_USER_MODEL(
-            first_name=user_info.get('first_name'),
-            last_name=user_info.get('last_name'),
-            email=user_info.get('email'),
+#     except settings.AUTH_USER_MODEL.DoesNotExist:
+#         password = settings.AUTH_USER_MODEL.objects.make_random_password()
+#         user = settings.AUTH_USER_MODEL(
+#             first_name=user_info.get('first_name'),
+#             last_name=user_info.get('last_name'),
+#             email=user_info.get('email'),
 
-            facebook_id=user_info.get('id'),
-            profile_image=user_info.get('picture')['data']['url'],
-            date_joined=datetime.now(),
-            username=user_info.get('email') or user_info.get('last_name'),
-            gender=user_info.get('gender'),
-            is_active=1)
-        user.set_password(password)
-        user.save()
-        new_user = True
-    if old_cart:
-        update_cart(user.cart, old_cart)
-    token = Token.objects.get(user=user).key
-    if token:
-        return JsonResponse({'auth_token': token, 'user_info': {'username': user.first_name, 'email': user.email, 'image': user.profile_image}},
-                            safe=False)
-    else:
-        return JsonResponse({'error': 'Invalid data'}, safe=False)
+#             facebook_id=user_info.get('id'),
+#             profile_image=user_info.get('picture')['data']['url'],
+#             date_joined=datetime.now(),
+#             username=user_info.get('email') or user_info.get('last_name'),
+#             gender=user_info.get('gender'),
+#             is_active=1)
+#         user.set_password(password)
+#         user.save()
+#         new_user = True
+#     if old_cart:
+#         update_cart(user.cart, old_cart)
+#     token = Token.objects.get(user=user).key
+#     if token:
+#         return JsonResponse({'auth_token': token, 'user_info': {'username': user.first_name, 'email': user.email, 'image': user.profile_image}},
+#                             safe=False)
+#     else:
+#         return JsonResponse({'error': 'Invalid data'}, safe=False)

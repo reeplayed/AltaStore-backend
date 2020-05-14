@@ -19,7 +19,20 @@ from api.views import ProductsListView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
-from api.views import CustomObtainAuthToken,buy_products, ship, add_comment,registration_view, url_filters_cleaner, get_color_choices, ProductsFilterListView,filters_params_view, detail_view, facebook_login_view, add_item_cart_view, remove_item_cart_view, set_cart_view
+from api.views import 
+    CustomObtainAuthToken,
+    buy_products, 
+    ship, 
+    add_comment,
+    registration_view, 
+    url_filters_cleaner, 
+    get_color_choices, 
+    ProductsFilterListView,
+    filters_params_view, 
+    detail_view, 
+    add_item_cart_view, 
+    remove_item_cart_view, 
+    set_cart_view
 
 
 urlpatterns = [
@@ -27,7 +40,6 @@ urlpatterns = [
     path('api/prodlist/', ProductsListView.as_view()),
     path('token-auth/', CustomObtainAuthToken.as_view(), name='api_token_auth'),
     path('productfilterlist/', ProductsFilterListView.as_view(), name='filter_list'),
-    path('login/', facebook_login_view, name='login'),
     path('filtersparams/', filters_params_view, name='filters'),
     path('url_filters_cleaner/', url_filters_cleaner, name='url_filters_leaner'),
     path('color-choices/', get_color_choices, name='color_choices'),

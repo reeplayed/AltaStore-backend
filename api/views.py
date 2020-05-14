@@ -6,7 +6,6 @@ from .serializer import CustomAuthTokenSerializer
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import render, get_object_or_404
 from product.models import Product, Comment
-from .models import CustomUser
 from datetime import datetime
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -24,8 +23,7 @@ from functools import reduce
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .pagination import SetPagination
 import random 
-
-
+from django.conf import settings
 
 @api_view(['POST'])
 def ship(request):
@@ -183,12 +181,9 @@ def filters_params_view(request):
     priceRange = Product.objects.get_min_max_category_price(filterType)
     return Response({'price': priceRange})
 
-
-
 @api_view(['GET'])
 def get_color_choices(request):
     return Response(Product.objects.get_color_choices())
-
 
 @api_view(['POST', 'GET'])
 def url_filters_cleaner(request):
@@ -269,7 +264,6 @@ def url_filters_cleaner(request):
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
     return Response({'clean_params': clean_params, 'price_range': minmax_price, 'allColors': Product.objects.get_color_choices()})
-
 
 @api_view(['POST', 'GET'])
 def add_item_cart_view(request):
@@ -387,12 +381,12 @@ class CustomObtainAuthToken(ObtainAuthToken):
 def registration_view(request):
     data = request.data
     errors = {}
-    if CustomUser.objects.filter(username=data.username):
+    if settings.AUTH_USER_MODEL.objects.filter(username=data.username):
         errors['username'] = 'Taka nazwa użytkownika juz istnieje.'
-    if CustomUser.objects.filter(email=data.email):
+    if settings.AUTH_USER_MODEL.objects.filter(email=data.email):
         errors['email'] = 'Taki adres email już istnieje.'
     if not errors:
-        user = CustomUser(username=data.username, email=data.email, password=data.password)
+        user = settings.AUTH_USER_MODEL(username=data.username, email=data.email, password=data.password)
         user.save()
         return Response({'message': 'Konto zostało utworzone'})
     else:
@@ -418,11 +412,11 @@ def facebook_login_view(request):
         return JsonResponse({'error': 'Invalid data'}, safe=False)
 
     try:
-        user = CustomUser.objects.get(facebook_id=user_info.get('id'))
+        user = settings.AUTH_USER_MODEL.objects.get(facebook_id=user_info.get('id'))
 
-    except CustomUser.DoesNotExist:
-        password = CustomUser.objects.make_random_password()
-        user = CustomUser(
+    except settings.AUTH_USER_MODEL.DoesNotExist:
+        password = settings.AUTH_USER_MODEL.objects.make_random_password()
+        user = settings.AUTH_USER_MODEL(
             first_name=user_info.get('first_name'),
             last_name=user_info.get('last_name'),
             email=user_info.get('email'),

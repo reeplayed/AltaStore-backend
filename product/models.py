@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from decimal import Decimal
 from django.conf import settings
+from PIL import Image
 
 COLOR = (
     ('white', '#FEFEFE'),
@@ -51,6 +52,7 @@ class Product(models.Model):
     date_add = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
 
+    card_image = models.ImageField(default='default.jpg', upload_to=upload_image_path)
     image = models.ImageField(default='default.jpg', upload_to=upload_image_path)
     image_2 = models.ImageField(default='default.jpg', upload_to=upload_image_path)
     image_3 = models.ImageField(default='default.jpg', upload_to=upload_image_path)
@@ -70,6 +72,15 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+            super(Product, self).save(*args, **kwargs)
+
+            img = Image.open(self.card_image.path)
+
+            if img.height > 300 or img.width > 500:
+                output_size = (500, 300)
+                img.thumbnail(output_size)
+                img.save(self.card_image.path)
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
     if instance.slug is None:

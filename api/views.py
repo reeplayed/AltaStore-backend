@@ -15,7 +15,7 @@ from cart.serializer import CartSerializer
 from cart.models import Item
 import json
 from .utils import update_cart
-from product.serializers import CommentSerializer, ProductSerializer
+from product.serializers import CommentSerializer, ProductSerializer, ProductSerializerExpand
 from rest_framework import status
 from django.http import Http404
 from django.db.models import Q
@@ -28,7 +28,6 @@ import random
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
 def ship(request):
     
     ships = [5, 4, 3, 3,5, 2, 2, 2]
@@ -136,7 +135,7 @@ def ship(request):
 def detail_view(request, slug):
     print(request.headers)
     product = get_object_or_404(Product, slug=slug)
-    prod_serializer = ProductSerializer(product)
+    prod_serializer = ProductSerializerExpand(product)
     comments = []
     for comm in list(product.comment.all()):
         comments.append(CommentSerializer(comm).data)

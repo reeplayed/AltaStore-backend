@@ -19,8 +19,7 @@ from api.views import ProductsListView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
-from api.views import 
-    CustomObtainAuthToken,
+from api.views import CustomObtainAuthToken,
     buy_products, 
     ship, 
     add_comment,

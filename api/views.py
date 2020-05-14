@@ -388,7 +388,7 @@ def registration_view(request):
     if not errors:
         user = settings.AUTH_USER_MODEL(username=data['username'], email=data['email'], password=data['password'])
         user.save()
-        return Response({'message': 'Konto zostało utworzone'})
+        return Response({'message': 'Konto zostało utworzone.'})
     else:
         raise Http404
 

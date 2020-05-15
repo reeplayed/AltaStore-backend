@@ -24,6 +24,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from .pagination import SetPagination
 import random 
 from django.contrib.auth import get_user_model
+from rest_framework.response import Response
+
 
 User = get_user_model()
 
@@ -392,7 +394,7 @@ def registration_view(request):
         user.save()
         return Response({'message': 'Konto zostało utworzone.'})
     else:
-        raise Http404
+        return Response({'errors': errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # @csrf_exempt

@@ -12,9 +12,7 @@ from rest_framework.authtoken.models import Token
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    """
-    Custom user realization based on Django AbstractUser and PermissionMixin.
-    """
+   
     email = models.EmailField(
         ('email address'),
         unique=True,
@@ -65,7 +63,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    # this is needed to use this model with django auth as a custom user class
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 

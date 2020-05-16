@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save, post_save
 from decimal import Decimal
 from django.conf import settings
 from PIL import Image
+import random
 
 COLOR = (
     ('white', '#FEFEFE'),
@@ -50,7 +51,7 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(null=True, blank=True, unique=True)
-    content = models.TextField()
+    content = models.TextField(default='Prezentowany model z kolekcji vero Amareno to funkcjonalny narożnik, który  pozwoli nam cieszyć się każdą chwilą. Niełatwo jest być bohaterem dnia codziennego, ale gdy w salonie gości narożnik wielofunkcyjny, sukces w tej dziedzinie jest już tylko kwestią czasu. Wizyta rodziny, zmęczenie po pracy, czy zwyczajna ochota na zmianę miejsca spania, to okoliczności, które powodują, że w salonie nie może zabraknąć narożnika z funkcją spania (sposób rozkładania - stelaż "włoski"). Wygodny narożnik może być idealnym zamiennikiem klasycznego łóżka zarówno w sytuacjach awaryjnych, jak i na co dzień.')
     date_add = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(auto_now=True)
 
@@ -58,7 +59,7 @@ class Product(models.Model):
     image = models.ImageField(default='default.jpg', upload_to=upload_image_path)
     image_2 = models.ImageField(default='default.jpg', upload_to=upload_image_path)
     image_3 = models.ImageField(default='default.jpg', upload_to=upload_image_path)
-    price = models.DecimalField(default=11.00, max_digits=9, decimal_places=2)
+    price = models.DecimalField(default=random.randint(3999, 12999), max_digits=9, decimal_places=2)
     category = models.CharField(max_length=50, null=True, blank=True, choices=CATEGORY)
     color = models.CharField(max_length=10, null=True, blank=True, choices=COLOR)
     cloth = models.CharField(max_length=10, null=True, blank=True, choices=CLOTH)

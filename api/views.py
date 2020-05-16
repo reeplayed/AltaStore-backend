@@ -287,7 +287,7 @@ def add_item_cart_view(request):
         cart = CartSerializer(request.user.cart)
         return Response(cart.data)
 
-    return Response({'chuj': 'takkk'})
+    return Response({'message': 'Succes'})
 
 
 @api_view(['POST'])
@@ -308,7 +308,7 @@ def remove_item_cart_view(request):
                     item.save()
                 return Response({'all': 'false'})
 
-    return Response({'chuj': 'takkk'})
+    return Response({'message': 'Succes'})
 
 
 class ProductsListView(ListAPIView):

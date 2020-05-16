@@ -29,9 +29,6 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
             user = authenticate(request=self.context.get('request'),
                                 username=username, password=password)
 
-            # The authenticate call simply returns None for is_active=False
-            # users. (Assuming the default ModelBackend authentication
-            # backend.)
             if not CustomUser.objects.filter(username=username):
                 msg = _('Użytkownik o takiej nazwie nie istnieje.')
                 raise serializers.ValidationError(msg, code='authorization')

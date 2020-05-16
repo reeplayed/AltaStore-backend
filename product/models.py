@@ -31,8 +31,10 @@ class ProductManager(models.Manager):
         options = {
             'price_up': '-price',
             'price_down': 'price',
-            'rate_up': '-rate',
-            'rate_down': 'rate'
+            'rate_up': '-average_rating',
+            'rate_down': 'average_rating'
+            'sell_up': '-sell_quantity'
+            'sell_down': 'sell_quantity'
         }
         return options
 

@@ -390,7 +390,8 @@ def registration_view(request):
     if User.objects.filter(email=data['email']):
         errors['email'] = 'Taki adres email już istnieje.'
     if not errors:
-        user = User(username=data['username'], email=data['email'], password=data['password'])
+        user = User(username=data['username'], email=data['email'])
+        user.set_password(data['password'])
         user.save()
         return Response({'message': 'Konto zostało utworzone.'})
     else:

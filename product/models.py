@@ -32,8 +32,8 @@ class ProductManager(models.Manager):
             'price_up': '-price',
             'price_down': 'price',
             'rate_up': '-average_rating',
-            'rate_down': 'average_rating'
-            'sell_up': '-sell_quantity'
+            'rate_down': 'average_rating',
+            'sell_up': '-sell_quantity',
             'sell_down': 'sell_quantity'
         }
         return options

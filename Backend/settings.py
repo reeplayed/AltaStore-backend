@@ -137,6 +137,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-CORS_ORIGIN_WHITELIST = ['https://jolly-ride-e2812e.netlify.app', 'http://localhost:8080','https://naughty-khorana-bd87a0.netlify.com']
+CORS_ORIGIN_WHITELIST = ['https://jolly-ride-e2812e.netlify.app', 'http://localhost:8080','https://naughty-khorana-bd87a0.netlify.app']
 
 django_heroku.settings(locals())

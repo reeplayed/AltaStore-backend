@@ -5,7 +5,7 @@ from django.db.models.signals import pre_save, post_save, m2m_changed
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     updatetime = models.DateTimeField(auto_now=True)
     addtime = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -42,18 +42,6 @@ def cart_total(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(cart_total, sender=Item)
-
-# def total_changed(sender, instance, action, *args, **kwargs):
-#     all_items = instance.items.all()
-#     total = 0
-#     for i in all_items:
-#         total += i.product.price
-#     instance.total = total
-#     instance.save()
-#
-#
-# m2m_changed.connect(total_changed, sender=Cart.items.through)
-
 
 def cart_create(sender, instance, created, *args, **kwargs):
     if created:
